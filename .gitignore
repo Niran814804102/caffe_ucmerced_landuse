@@ -137,3 +137,7 @@ data/UCMerced_Landuse/train/
 # 模型文件
 *.caffemodel
 *.solverstate
+
+# 中间输出
+*.npy
+*.mdb
