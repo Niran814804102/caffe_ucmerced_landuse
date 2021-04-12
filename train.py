@@ -1,6 +1,6 @@
 # coding: utf-8
 
-caffe_root = '/root/caffe-master/'
+caffe_root = '/home/zju/wlj/caffe-master/'
 import sys
 
 sys.path.insert(0, caffe_root + 'python')
@@ -26,7 +26,7 @@ os.chdir('examples')
 
 import os
 
-weights = '/root/caffe-master/models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel'
+weights = '/home/zju/wlj/caffe-master/models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel'
 assert os.path.exists(weights)
 
 imagenet_label_file = caffe_root + 'data/ilsvrc12/synset_words.txt'
@@ -35,7 +35,7 @@ assert len(imagenet_labels) == 1000
 print('Loaded ImageNet labels:\n', '\n'.join(imagenet_labels[:10] + ['...']))
 
 # Load style labels to style_labels
-style_label_file = caffe_root + 'models/finetune_UCMerced_LandUse/style_names.txt'
+style_label_file = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/style_names.txt'
 style_labels = list(np.loadtxt(style_label_file, str, delimiter='\n'))
 if NUM_STYLE_LABELS > 0:
     style_labels = style_labels[:NUM_STYLE_LABELS]
@@ -113,7 +113,7 @@ def caffenet(data, label=None, train=True, num_classes=1000,
         n.loss = L.SoftmaxWithLoss(fc8, n.label)
         n.acc = L.Accuracy(fc8, n.label)
     # write the net to a temporary file and return its filename
-    with open('/root/caffe-master/models/finetune_UCMerced_LandUse/deploy.prototxt', 'w') as f:
+    with open('/home/zju/wlj/land_use_cnn/result/UCMerced_LandUse/deploy.prototxt', 'w') as f:
         f.write(str(n.to_proto()))
         return f.name
 
@@ -121,9 +121,9 @@ def caffenet(data, label=None, train=True, num_classes=1000,
 def style_net(train=True, learn_all=False, subset=None):
     if subset is None:
         subset = 'train' if train else 'test'
-    source = caffe_root + 'models/finetune_UCMerced_LandUse/%s.txt' % subset
+    source = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/%s.txt' % subset
     transform_param = dict(mirror=train, crop_size=227,
-                           mean_file=caffe_root + 'models/finetune_UCMerced_LandUse/mean.binaryproto')
+                           mean_file='/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/mean.binaryproto')
     style_data, style_label = L.ImageData(
         transform_param=transform_param, source=source,
         batch_size=50, new_height=256, new_width=256, ntop=2)
@@ -180,13 +180,13 @@ def solver(train_net_path, test_net_path=None, base_lr=0.001):
     # Snapshots are files used to store networks we've trained.  Here, we'll
     # snapshot every 10K iterations -- ten times during training.
     s.snapshot = 10000
-    s.snapshot_prefix = caffe_root + 'models/finetune_UCMerced_LandUse'
+    s.snapshot_prefix = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse'
 
     # Train on the GPU.  Using the CPU to train large networks is very slow.
     s.solver_mode = caffe_pb2.SolverParameter.GPU
 
     # Write the solver to a temporary file and return its filename.
-    # with open('/root/caffe-master/models/finetune_UCMerced_LandUse/solver.prototxt','w') as f:
+    # with open('/home/zju/wlj/land_use_cnn/result/UCMerced_LandUse/solver.prototxt','w') as f:
     with tempfile.NamedTemporaryFile(delete=False) as f:
         f.write(str(s).encode())
         return f.name
@@ -210,7 +210,7 @@ def run_solvers(niter, solvers, disp_interval=1):
                                   for n, _ in solvers)
             print('%3d) %s' % (it, loss_disp))
     # Save the learned weights from both nets.
-    weight_dir = '/root/caffe-master/models/finetune_UCMerced_LandUse/'
+    weight_dir = '/home/zju/wlj/land_use_cnn/result/UCMerced_LandUse/'
     weights = {}
     for name, s in solvers:
         filename = 'weights_finally.%s.caffemodel' % name
@@ -221,7 +221,7 @@ def run_solvers(niter, solvers, disp_interval=1):
 
 
 print('training...')
-niter = 1000  # number of iterations to train
+niter = 10000  # number of iterations to train
 
 # Reset style_solver as before.
 style_solver_filename = solver(style_net(train=True))

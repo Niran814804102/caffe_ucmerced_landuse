@@ -8,9 +8,9 @@ import joblib
 from sklearn.metrics import accuracy_score
 from sklearn.svm import SVC
 
-caffe_root = '/root/caffe-master/'  # 设置你caffe的安装目录
-X = np.load(caffe_root + 'models/finetune_UCMerced_LandUse/' + 'features_train.npy')
-y = np.load(caffe_root + 'models/finetune_UCMerced_LandUse/' + 'labels_train.npy')
+caffe_root = '/home/zju/wlj/caffe-master/'  # 设置你caffe的安装目录
+X = np.load('/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/' + 'features_train.npy')
+y = np.load('/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/' + 'labels_train.npy')
 # y=y.reshape((-1,1))
 
 # X.shape=(1680, 50, 4096) Y.shape=(1680)
@@ -36,7 +36,7 @@ y_pred = clf.predict(X_test)
 print("Accuracy: %.3f" % accuracy_score(y_test, y_pred))
 # 准备模型输出目录
 import os
-model_dir = caffe_root + 'models/finetune_UCMerced_LandUse' + 'svm_model/'
+model_dir = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/' + 'svm_model/'
 if not os.path.exists(model_dir):
     os.makedirs(model_dir)
 joblib.dump(clf, model_dir + 'svm.pkl')

@@ -1,6 +1,7 @@
-#!/usr/bin/env sh
-DATA=/root/caffe-master/data/UCMerced_LandUse
-MY=/root/caffe-master/models/finetune_UCMerced_LandUse
+
+#!/bin/sh
+DATA=/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse
+MY=/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse
 LABELS=('agricultural' 'airplane' 'baseballdiamond' 'beach' 'buildings' 'chaparral' 'denseresidential' 'forest' 'freeway' 'golfcourse' 'harbor' 'intersection' 'mediumresidential' 'mobilehomepark' 'overpass' 'parkinglot' 'river' 'runway' 'sparseresidential' 'storagetanks' 'tenniscourt')
 
 echo "Create train.txt..."

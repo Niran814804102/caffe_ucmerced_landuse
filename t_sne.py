@@ -13,11 +13,11 @@ from sklearn.decomposition import PCA
 from mpl_toolkits.mplot3d import Axes3D
 
 from sklearn.utils import shuffle
-caffe_root='/root/caffe-master/'
+caffe_root='/home/zju/wlj/caffe-master/'
 X=np.load('features.npy')
 y=np.load('labels.npy')
 #y=y.reshape((-1,1))
-style_label_file = caffe_root + 'models/finetune_UCMerced_LandUse/style_names.txt'
+style_label_file = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/style_names.txt'
 
 style_labels = list(np.loadtxt(style_label_file, str, delimiter='\n'))
 print(style_labels)

@@ -19,7 +19,7 @@ NUM_STYLE_LABELS = 21
 
 import sys
 
-caffe_root = '/root/caffe-master/'  # 设置你caffe的安装目录
+caffe_root = '/home/zju/wlj/caffe-master/'  # 设置你caffe的安装目录
 sys.path.insert(0, caffe_root + 'python')
 import caffe  # 导入caffe
 import time
@@ -27,9 +27,9 @@ import time
 caffe.set_mode_cpu()
 
 print('load the structure of the model...')
-model_def = caffe_root + 'models/finetune_UCMerced_LandUse/deploy.prototxt'
+model_def = '/home/zju/wlj/land_use_cnn/result/UCMerced_LandUse/deploy.prototxt'
 print('load the weights of the model...')
-model_weights = caffe_root + 'models/finetune_UCMerced_LandUse/weights_finally.pretrained.caffemodel'
+model_weights = '/home/zju/wlj/land_use_cnn/result/UCMerced_LandUse/weights_finally.pretrained.caffemodel'
 
 print('build the trained net...')
 net = caffe.Net(model_def,  # defines the structure of the model
@@ -37,7 +37,7 @@ net = caffe.Net(model_def,  # defines the structure of the model
                 caffe.TEST)  # use test mode (e.g., don't perform dropout)
 
 # load the mean ImageNet image (as distributed with Caffe) for subtraction
-mu = np.load('/root/caffe-master/models/finetune_UCMerced_LandUse/mean.npy')
+mu = np.load('/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/mean.npy')
 mu = mu.mean(1).mean(1)  # average over pixels to obtain the mean (BGR) pixel values
 # print('mean-subtracted values:', zip('BGR', mu),mu)
 
@@ -49,7 +49,7 @@ transformer.set_mean('data', mu)  # subtract the dataset-mean value in each chan
 transformer.set_raw_scale('data', 255)  # rescale from [0, 1] to [0, 255]
 transformer.set_channel_swap('data', (2, 1, 0))  # swap channels from RGB to BGR
 
-style_label_file = caffe_root + 'models/finetune_UCMerced_LandUse/style_names.txt'
+style_label_file = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/style_names.txt'
 style_labels = list(np.loadtxt(style_label_file, str, delimiter='\n'))
 
 
@@ -142,7 +142,7 @@ def vis_square(data):
 # print(net.blobs)
 
 def vis_show():
-    image = load_image('/root/caffe-master/data/UCMerced_LandUse/test/tenniscourt95.jpg')
+    image = load_image('/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/test/tenniscourt95.jpg')
     transformed_image = transformer.preprocess('data', image)
     disp_style_preds(net, transformed_image)
     print("第一层卷积层滤波器可视化：")
@@ -174,7 +174,7 @@ def vis_show():
 
 # 每一个test图片的推理时间和推理结果
 def show_predict():
-    images = '/root/caffe-master/models/finetune_UCMerced_LandUse/test.txt'
+    images = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/test.txt'
     images = list(np.loadtxt(images, str, delimiter='\n'))
     for image in images:
         true_label_num = int(image.split(' ')[1])
@@ -190,7 +190,7 @@ def show_predict():
 
 # 输出每一类的预测精度
 def show_acc_preclass():
-    images = '/root/caffe-master/models/finetune_UCMerced_LandUse/test.txt'
+    images = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/test.txt'
     images = list(np.loadtxt(images, str, delimiter='\n'))
     preclass_num = {}
     precalss_corrct_num = {}
@@ -233,6 +233,6 @@ def show_acc_preclass():
     plt.show()
 
 
-# show_acc_preclass()
-# show_predict()
-vis_show()
+show_acc_preclass()
+show_predict()
+# vis_show()

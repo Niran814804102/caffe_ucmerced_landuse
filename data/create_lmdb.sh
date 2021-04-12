@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
-TOOL=/root/caffe-master/build/tools
-MY=/root/caffe-master/models/finetune_UCMerced_LandUse
-
+TOOL=/home/zju/wlj/caffe-master/build/tools
+MY=/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse
 echo "Create train lmdb.."
 rm -rf $MY/img_train_lmdb
 $TOOL/convert_imageset \

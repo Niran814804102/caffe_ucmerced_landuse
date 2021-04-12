@@ -4,15 +4,15 @@ import sys
 
 import numpy as np
 
-caffe_root = '/root/caffe-master/'  # 设置你caffe的安装目录
+caffe_root = '/home/zju/wlj/caffe-master/'  # 设置你caffe的安装目录
 sys.path.insert(0, caffe_root + 'python')
 import caffe  # 导入caffe
 
 caffe.set_mode_cpu()
 print('load the structure of the model...')
-model_def = caffe_root + 'models/finetune_UCMerced_LandUse/deploy.prototxt'
+model_def = '/home/zju/wlj/land_use_cnn/result/UCMerced_LandUse/deploy.prototxt'
 print('load the weights of the model...')
-model_weights = caffe_root + 'models/finetune_UCMerced_LandUse/weights_finally.pretrained.caffemodel'
+model_weights = '/home/zju/wlj/land_use_cnn/result/UCMerced_LandUse/weights_finally.pretrained.caffemodel'
 
 print('build the trained net...')
 net = caffe.Net(model_def,  # defines the structure of the model
@@ -20,7 +20,7 @@ net = caffe.Net(model_def,  # defines the structure of the model
                 caffe.TEST)  # use test mode (e.g., don't perform dropout)
 
 # load the mean ImageNet image (as distributed with Caffe) for subtraction
-mu = np.load('/root/caffe-master/models/finetune_UCMerced_LandUse/mean.npy')
+mu = np.load('/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/mean.npy')
 mu = mu.mean(1).mean(1)  # average over pixels to obtain the mean (BGR) pixel values
 # print('mean-subtracted values:', zip('BGR', mu),mu)
 
@@ -44,8 +44,8 @@ def load_image(image_path):
 
 
 def show_predict():
-    # images = '/root/caffe-master/data/UCMerced_LandUse/creat_lmdb.txt'
-    images = '/root/caffe-master/models/finetune_UCMerced_LandUse/train.txt'
+    # images = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/creat_lmdb.txt'
+    images = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/train.txt'
     images = list(np.loadtxt(images, str, delimiter='\n'))
     features = []
     labels = []
@@ -64,5 +64,5 @@ def show_predict():
 
 
 features, labels = show_predict()
-np.save(caffe_root + 'models/finetune_UCMerced_LandUse/' + 'features_train.npy', features)
-np.save(caffe_root + 'models/finetune_UCMerced_LandUse/' + 'labels_train.npy', labels)
+np.save('/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/' + 'features_train.npy', features)
+np.save('/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/' + 'labels_train.npy', labels)

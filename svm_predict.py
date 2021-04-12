@@ -8,18 +8,18 @@ import matplotlib.gridspec as gridspec
 
 import sys
 
-caffe_root = '/root/caffe-master/'  # 设置你caffe的安装目录
+caffe_root = '/home/zju/wlj/caffe-master/'  # 设置你caffe的安装目录
 
-image_root = '/root/caffe-master/data/UCMerced_LandUse/Images/'
+image_root = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/Images/'
 sys.path.insert(0, caffe_root + 'python')
 import caffe  # 导入caffe
 import time
 
 caffe.set_mode_cpu()
 print('load the structure of the model...')
-model_def = caffe_root + 'models/finetune_UCMerced_LandUse/deploy.prototxt'
+model_def = '/home/zju/wlj/land_use_cnn/result/UCMerced_LandUse/deploy.prototxt'
 print('load the weights of the model...')
-model_weights = caffe_root + 'models/finetune_UCMerced_LandUse/weights_finally.pretrained.caffemodel'
+model_weights = '/home/zju/wlj/land_use_cnn/result/UCMerced_LandUse/weights_finally.pretrained.caffemodel'
 
 print('build the trained net...')
 net = caffe.Net(model_def,  # defines the structure of the model
@@ -27,7 +27,7 @@ net = caffe.Net(model_def,  # defines the structure of the model
                 caffe.TEST)  # use test mode (e.g., don't perform dropout)
 
 # load the mean ImageNet image (as distributed with Caffe) for subtraction
-mu = np.load('/root/caffe-master/models/finetune_UCMerced_LandUse/mean.npy')
+mu = np.load('/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/mean.npy')
 mu = mu.mean(1).mean(1)  # average over pixels to obtain the mean (BGR) pixel values
 # print('mean-subtracted values:', zip('BGR', mu),mu)
 
@@ -75,8 +75,8 @@ def show_labes(image, probs, lables, true_label):
     plt.show()
 
 
-model_dir = caffe_root + 'models/finetune_UCMerced_LandUse' + 'svm_model/'
-style_label_file = caffe_root + 'models/finetune_UCMerced_LandUse/style_names.txt'
+model_dir = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/' + 'svm_model/'
+style_label_file = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/style_names.txt'
 style_labels = list(np.loadtxt(style_label_file, str, delimiter='\n'))
 if NUM_STYLE_LABELS > 0:
     style_labels = style_labels[:NUM_STYLE_LABELS]
@@ -105,7 +105,7 @@ def disp_style_preds(feat):
 
 
 def show_predict():
-    images = '/root/caffe-master/models/finetune_UCMerced_LandUse/test.txt'
+    images = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/test.txt'
     images = list(np.loadtxt(images, str, delimiter='\n'))
     for image in images:
         true_label_num = int(image.split(' ')[1])
@@ -123,7 +123,7 @@ def show_predict():
 
 
 def show_acc_preclass():
-    images = '/root/caffe-master/models/finetune_UCMerced_LandUse/test.txt'
+    images = '/home/zju/wlj/land_use_cnn/data/UCMerced_LandUse/test.txt'
     images = list(np.loadtxt(images, str, delimiter='\n'))
     preclass_num = {}
     precalss_corrct_num = {}
