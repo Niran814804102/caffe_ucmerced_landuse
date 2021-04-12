@@ -6,7 +6,9 @@ import sys
 sys.path.insert(0, caffe_root + 'python')
 import caffe
 
-caffe.set_mode_cpu()
+# caffe.set_mode_cpu()
+caffe.set_device(0)
+caffe.set_mode_gpu()
 
 import numpy as np
 import tempfile

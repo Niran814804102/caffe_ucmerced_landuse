@@ -15,7 +15,9 @@ sys.path.insert(0, caffe_root + 'python')
 import caffe  # 导入caffe
 import time
 
-caffe.set_mode_cpu()
+# caffe.set_mode_cpu()
+caffe.set_device(0)
+caffe.set_mode_gpu()
 print('load the structure of the model...')
 model_def = '/home/zju/wlj/land_use_cnn/result/UCMerced_LandUse/deploy.prototxt'
 print('load the weights of the model...')
